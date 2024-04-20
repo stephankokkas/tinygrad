@@ -86,7 +86,7 @@ if __name__ == "__main__":
   output_dir = Path(".").resolve() / "outputs"
   output_dir.mkdir(exist_ok=True)
   # optimizers
-  optim_g = optim.Adam(get_parameters(generator),lr=0.0002, b1=0.5)  # 0.0002 for equilibrium!
+  optim_g = optim.Adam(get_parameters(generator),lr=0.0002, b1=0.5)
   optim_d = optim.Adam(get_parameters(discriminator),lr=0.0002, b1=0.5)
 
   for param in get_parameters(generator):
