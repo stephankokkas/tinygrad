@@ -41,7 +41,6 @@ def safe_save(tensors:Dict[str, Tensor], fn:str, metadata:Optional[Dict[str, Any
   for k,v in safe_load(t).items(): v.assign(tensors[k])
 
 # state dict
-
 from collections import OrderedDict
 def get_state_dict(obj, prefix:str='', tensor_type=Tensor) -> Dict[str, Tensor]:
   if isinstance(obj, tensor_type): return {prefix.strip('.'):obj}
@@ -71,7 +70,6 @@ def load_state_dict(model, state_dict:Dict[str, Tensor], strict=True, verbose=Tr
       if consume: del state_dict[k]
 
 # torch support!
-
 def torch_load(fn:str) -> Dict[str, Tensor]:
   t = Tensor.empty(os.stat(fn).st_size, dtype=dtypes.uint8, device=f"disk:{fn}")
 

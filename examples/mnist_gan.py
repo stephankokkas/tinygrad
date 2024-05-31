@@ -89,24 +89,33 @@ if __name__ == "__main__":
   optim_g = optim.Adam(get_parameters(generator),lr=0.0002, b1=0.5)
   optim_d = optim.Adam(get_parameters(discriminator),lr=0.0002, b1=0.5)
 
-  for param in get_parameters(generator):
-    print(param)
 
-  # # training loop
-  # for epoch in (t := trange(epochs)):
-  #   loss_g, loss_d = 0.0, 0.0
-  #   for _ in range(n_steps):
-  #     data_real = make_batch(images_real)
-  #     for step in range(k):  # Try with k = 5 or 7.
-  #       noise = Tensor.randn(batch_size, 128)
-  #       data_fake = generator.forward(noise).detach()
-  #       loss_d += train_discriminator(optim_d, data_real, data_fake)
-  #     noise = Tensor.randn(batch_size, 128)
-  #     data_fake = generator.forward(noise)
-  #     loss_g += train_generator(optim_g, data_fake)
-  #   if (epoch + 1) % sample_interval == 0:
-  #     fake_images = generator.forward(ds_noise).detach().numpy()
-  #     fake_images = (fake_images.reshape(-1, 1, 28, 28) + 1) / 2  # 0 - 1 range.
-  #     save_image(make_grid(torch.tensor(fake_images)), output_dir / f"image_{epoch+1}.jpg")
-  #   t.set_description(f"Generator loss: {loss_g/n_steps}, Discriminator loss: {loss_d/n_steps}")
-  # print("Training Completed!")
+  all_tensors = []
+  for param in get_parameters(generator):
+    all_tensors.append(param)
+  
+  for param in get_parameters(discriminator):
+    all_tensors.append(param)
+
+  for i in all_tensors:
+    print(i)
+  exit(0)
+
+  # training loop
+  for epoch in (t := trange(epochs)):
+    loss_g, loss_d = 0.0, 0.0
+    for _ in range(n_steps):
+      data_real = make_batch(images_real)
+      for step in range(k):  # Try with k = 5 or 7.
+        noise = Tensor.randn(batch_size, 128)
+        data_fake = generator.forward(noise).detach()
+        loss_d += train_discriminator(optim_d, data_real, data_fake)
+      noise = Tensor.randn(batch_size, 128)
+      data_fake = generator.forward(noise)
+      loss_g += train_generator(optim_g, data_fake)
+    if (epoch + 1) % sample_interval == 0:
+      fake_images = generator.forward(ds_noise).detach().numpy()
+      fake_images = (fake_images.reshape(-1, 1, 28, 28) + 1) / 2  # 0 - 1 range.
+      save_image(make_grid(torch.tensor(fake_images)), output_dir / f"image_{epoch+1}.jpg")
+    t.set_description(f"Generator loss: {loss_g/n_steps}, Discriminator loss: {loss_d/n_steps}")
+  print("Training Completed!")
